@@ -5,20 +5,20 @@
 #include "BehaviorTree/BTFunctionLibrary.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Public/PatrollingGuard.h"
+#include "Public/PatrollingComponent.h"
 
 EBTNodeResult::Type UChooseNextWaypoint::ExecuteTask(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMemory)
 {
 	auto BlackBoardComponent = OwnerComp.GetBlackboardComponent();
-	auto AIController = OwnerComp.GetAIOwner();
-	auto AIPawn = AIController->GetPawn();
-	auto AICharacter = Cast<APatrollingGuard>(AIPawn);
+	auto AIPawn = OwnerComp.GetAIOwner()->GetPawn();
 	int32 index = BlackBoardComponent->GetValueAsInt(NextWaypointIndex.SelectedKeyName);
+	auto PatrollingComp = AIPawn->FindComponentByClass<UPatrollingComponent>();
 
-	UE_LOG(LogTemp, Warning, TEXT("AICharacter: %s"), *AICharacter->GetName());
+	if (!ensure(PatrollingComp)) return EBTNodeResult::Failed;
 
-	if (!ensure(AIController && AICharacter)) return EBTNodeResult::Failed;
+	Waypoints = PatrollingComp->GetTargetPoints();
 
-	Waypoints = AICharacter->TargetPoints;
+	if (!ensure(Waypoints.Num() > 0)) return EBTNodeResult::Failed;
 
 	BlackBoardComponent->SetValueAsObject(CurrentWaypoint.SelectedKeyName, Waypoints[index]);
 	BlackBoardComponent->SetValueAsInt(NextWaypointIndex.SelectedKeyName, (index + 1) % Waypoints.Num());
