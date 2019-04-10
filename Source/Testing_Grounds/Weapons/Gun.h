@@ -42,7 +42,7 @@ public:
 
 	/** Fires a projectile. */
 	UFUNCTION(BlueprintCallable, Category = "Firing")
-	void OnFire();
+	void OnFire(UPARAM(ref) UAnimInstance* AnimInstance_);
 
 private:
 

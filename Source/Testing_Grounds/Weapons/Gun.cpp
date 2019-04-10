@@ -49,9 +49,8 @@ void AGun::Tick(float DeltaTime)
 
 }
 
-void AGun::OnFire()
+void AGun::OnFire(UPARAM(ref) UAnimInstance* AnimInstance_)
 {
-	UE_LOG(LogTemp, Warning, TEXT("FIRING"));
 	// try and fire a projectile
 	if (ProjectileClass != NULL)
 	{
@@ -83,10 +82,11 @@ void AGun::OnFire()
 	if (FireAnimation != NULL)
 	{
 		// Get the animation object for the arms mesh
+		UE_LOG(LogTemp, Warning, TEXT("FIRING ANIMATION"));
 
-		if (AnimInstance != NULL)
+		if (AnimInstance_ != NULL)
 		{
-			AnimInstance->Montage_Play(FireAnimation, 1.f);
+			AnimInstance_->Montage_Play(FireAnimation, 1.f);
 		}
 	}
 }
