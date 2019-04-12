@@ -49,7 +49,7 @@ public:
 	TSubclassOf<AGun> GunBase;
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	void Fire();
+	void PullTrigger();
 
 	
 };

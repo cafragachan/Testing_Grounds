@@ -64,11 +64,12 @@ void AMannequin::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Pressed, this, &AMannequin::Fire);
+	PlayerInputComponent->BindAction("Fire", EInputEvent::IE_Pressed, this, &AMannequin::PullTrigger);
 
 }
 
-void AMannequin::Fire()
+void AMannequin::PullTrigger()
 {
+	if (!ensure(FP_Gun)) return;
 	FP_Gun->OnFire(Mesh1P->GetAnimInstance());
 }
