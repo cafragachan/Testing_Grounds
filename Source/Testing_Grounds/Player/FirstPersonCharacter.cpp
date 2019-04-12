@@ -249,5 +249,5 @@ bool AFirstPersonCharacter::EnableTouchscreenMovement(class UInputComponent* Pla
 
 void AFirstPersonCharacter::OnFire()
 {
-	FP_Gun->OnFire(Mesh1P->GetAnimInstance());
+	FP_Gun->OnFire(Mesh1P->GetAnimInstance(), GetMesh()->GetAnimInstance());
 }

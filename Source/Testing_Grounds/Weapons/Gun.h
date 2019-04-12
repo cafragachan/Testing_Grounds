@@ -37,12 +37,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	class UAnimMontage* FireAnimation;
 
+	/** AnimMontage to play each time we fire in ThirdPerson*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	UAnimMontage* TPFireAnimation;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	class UAnimInstance* AnimInstance;
 
 	/** Fires a projectile. */
 	UFUNCTION(BlueprintCallable, Category = "Firing")
-	void OnFire(UPARAM(ref) UAnimInstance* AnimInstance_);
+	void OnFire(UPARAM(ref) UAnimInstance* AnimInstance_, UPARAM(ref) UAnimInstance* TPAnimInstance_);
 
 private:
 

@@ -38,6 +38,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FirstPersonCameraComponent;
 
+	UFUNCTION(BlueprintCallable, Category = "State")
+	void Died();
+
 
 public:
 
