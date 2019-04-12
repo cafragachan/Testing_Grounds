@@ -85,5 +85,4 @@ void AMannequin::PullTrigger()
 {
 	if (!ensure(FP_Gun)) return;
 	FP_Gun->OnFire(Mesh1P->GetAnimInstance(), GetMesh()->GetAnimInstance());
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *GetMesh()->GetName());
 }
