@@ -36,18 +36,6 @@ public:
 	//Place Spawned actor 
 	void PlaceActor(TSubclassOf<AActor> ActorToSpawn_, FVector Location_, float Rotation_, float Scale_);
 
-protected:
-
-	UPROPERTY(EditDefaultsOnly)
-	class UHierarchicalInstancedStaticMeshComponent* HISMC_Grass = nullptr;
-	
-	UPROPERTY(EditDefaultsOnly, Category = "Foliage")
-	int32 GrassArrayNumber = 1000;
-
-private:
-
-	void PlaceGrassFoliage();
-
-	FVector RandomPositionInTile();
+	static FVector RandomPositionInTile();
 
 };

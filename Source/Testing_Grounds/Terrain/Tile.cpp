@@ -19,8 +19,6 @@ void ATile::BeginPlay()
 {
 	Super::BeginPlay();
 
-	HISMC_Grass = FindComponentByClass<UHierarchicalInstancedStaticMeshComponent>();
-	PlaceGrassFoliage();
 
 }
 
@@ -98,16 +96,6 @@ void ATile::PlaceActor(TSubclassOf<AActor> ActorToSpawn_, FVector Location_, flo
 	}
 }
 
-void ATile::PlaceGrassFoliage()
-{
-	if (!ensure(HISMC_Grass)) return;
-
-	for (int i = 0; i < GrassArrayNumber; ++i)
-	{
-		FTransform InstanceTransform = FTransform(RandomPositionInTile());
-		HISMC_Grass->AddInstance(InstanceTransform);
-	}
-}
 
 FVector ATile::RandomPositionInTile()
 {
