@@ -25,7 +25,7 @@ public:
 
 	//Spawns different Props in BP
 	UFUNCTION(BlueprintCallable, Category = "Procedural")
-	void PlaceActors(TSubclassOf<AActor> ActorToSpawn, int MinNumber, int MaxNumber);
+	void PlaceActors(TSubclassOf<AActor> ActorToSpawn, int MinNumber = 1, int MaxNumber = 1, float Radius_ = 250, float MinScale = 1, float MaxScale = 1);
 
 	//check if Random Procedural location is available
 	bool CanSpawnAtLocation(FVector Location_, float Radius_);
@@ -34,6 +34,20 @@ public:
 	bool FindEmptyLocation(FVector& OUTTestLocation_, float Radius_);
 
 	//Place Spawned actor 
-	void PlaceActor(TSubclassOf<AActor> ActorToSpawn_, FVector Location_);
+	void PlaceActor(TSubclassOf<AActor> ActorToSpawn_, FVector Location_, float Rotation_, float Scale_);
+
+protected:
+
+	UPROPERTY(EditDefaultsOnly)
+	class UHierarchicalInstancedStaticMeshComponent* HISMC_Grass = nullptr;
 	
+	UPROPERTY(EditDefaultsOnly, Category = "Foliage")
+	int32 GrassArrayNumber = 1000;
+
+private:
+
+	void PlaceGrassFoliage();
+
+	FVector RandomPositionInTile();
+
 };
