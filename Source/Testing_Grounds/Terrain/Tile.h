@@ -23,7 +23,17 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	//Spawns different Props in BP
 	UFUNCTION(BlueprintCallable, Category = "Procedural")
 	void PlaceActors(TSubclassOf<AActor> ActorToSpawn, int MinNumber, int MaxNumber);
+
+	//check if Random Procedural location is available
+	bool CanSpawnAtLocation(FVector Location_, float Radius_);
+
+	//Evaluate Empty Location
+	bool FindEmptyLocation(FVector& OUTTestLocation_, float Radius_);
+
+	//Place Spawned actor 
+	void PlaceActor(TSubclassOf<AActor> ActorToSpawn_, FVector Location_);
 	
 };
