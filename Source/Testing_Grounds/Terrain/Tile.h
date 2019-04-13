@@ -38,4 +38,7 @@ public:
 
 	static FVector RandomPositionInTile();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setup")
+	class UActorComponent* NavPool;
+
 };

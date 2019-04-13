@@ -14,6 +14,7 @@ class TESTING_GROUNDS_API AInfiniteTerrainGameMode : public ATesting_GroundsGame
 {
 	GENERATED_BODY()
 
+		AInfiniteTerrainGameMode();
 
 protected:
 
@@ -25,5 +26,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Tile")
 	void PopulateBoundsVolumePool();
+
+protected:
+
+	UPROPERTY(BlueprintReadOnly)
+	class UActorPool* NavPool;
+
 	
 };
