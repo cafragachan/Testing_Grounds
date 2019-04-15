@@ -19,6 +19,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -39,6 +42,15 @@ public:
 	static FVector RandomPositionInTile();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setup")
-	class UActorComponent* NavPool;
+	class UActorPool* NavPool;
+
+
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	void SetPool(UActorPool* NavPool_);
+
+
+private:
+
+	AActor* NavMesh;
 
 };

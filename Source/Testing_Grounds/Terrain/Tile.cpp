@@ -5,6 +5,8 @@
 #include "Public/DrawDebugHelpers.h"
 #include "Public/Math/TransformNonVectorized.h"
 #include "Components/HierarchicalInstancedStaticMeshComponent.h"
+#include "ActorPool.h"
+#include "Classes/AI/Navigation/NavigationSystem.h"
 
 // Sets default values
 ATile::ATile()
@@ -22,11 +24,35 @@ void ATile::BeginPlay()
 
 }
 
+void ATile::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	if (!ensure(NavPool)) return;
+	NavPool->ReturnActorToPool(NavMesh);
+}
+
 // Called every frame
 void ATile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ATile::SetPool(UActorPool* NavPool_)
+{
+	NavPool = NavPool_;
+	NavMesh = NavPool->Checkout();
+
+	if (!(NavMesh))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[%s] : no Pool"), *GetName());
+		return;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("[%s] : NavMesh %s"), *GetName(), *NavMesh->GetName());
+
+	NavMesh->SetActorLocation(GetActorLocation() + FVector(2000, 0 , 0));
+	GetWorld()->GetNavigationSystem()->Build();
 }
 
 void ATile::PlaceActors(TSubclassOf<AActor> ActorToSpawn, int MinNumber, int MaxNumber, float Radius_, float MinScale, float MaxScale)

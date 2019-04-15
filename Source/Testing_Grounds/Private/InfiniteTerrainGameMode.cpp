@@ -6,23 +6,28 @@
 #include "Terrain/ActorPool.h"
 
 
-AInfiniteTerrainGameMode::AInfiniteTerrainGameMode()
+AInfiniteTerrainGameMode::AInfiniteTerrainGameMode() : Super()
 {
 	NavPool = CreateDefaultSubobject<UActorPool>("NavPool");
+}
+
+void AInfiniteTerrainGameMode::InitGame(const FString & MapName, const FString & Options, FString & ErrorMessage)
+{
+	Super::InitGame(MapName, Options, ErrorMessage);
+
+	PopulateBoundsVolumePool();
+
 }
 
 void AInfiniteTerrainGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Warning, TEXT("Hello World"));
-
-	PopulateBoundsVolumePool();
 }
 
 void AInfiniteTerrainGameMode::AddToPool(ANavMeshBoundsVolume * NavMesh)
 {
-	UE_LOG(LogTemp, Warning, TEXT("NavMesh: %s"), *NavMesh->GetName())
+	NavPool->AddActorToPool(NavMesh);
 }
 
 void AInfiniteTerrainGameMode::PopulateBoundsVolumePool()
@@ -34,5 +39,8 @@ void AInfiniteTerrainGameMode::PopulateBoundsVolumePool()
 		AddToPool(FoundNavMesh);
 
 		++NavMeshIterator;
+
+		if (FoundNavMesh) UE_LOG(LogTemp, Warning, TEXT("navmeshfound: %s"), *FoundNavMesh->GetName());
+
 	}
 }

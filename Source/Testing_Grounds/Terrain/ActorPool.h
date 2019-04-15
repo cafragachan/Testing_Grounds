@@ -21,5 +21,9 @@ public:
 	void ReturnActorToPool(AActor* ActorToReturn);
 
 	void AddActorToPool(AActor* ActorToAdd);
+
+private:
+
+	TArray<AActor*> NavMeshesPool;
 	
 };

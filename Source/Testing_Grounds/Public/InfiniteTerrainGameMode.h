@@ -18,6 +18,8 @@ class TESTING_GROUNDS_API AInfiniteTerrainGameMode : public ATesting_GroundsGame
 
 protected:
 
+	virtual void InitGame(const FString & MapName, const FString & Options, FString & ErrorMessage) override;
+
 	virtual void BeginPlay() override;
 
 	void AddToPool(class ANavMeshBoundsVolume* NavMesh);
