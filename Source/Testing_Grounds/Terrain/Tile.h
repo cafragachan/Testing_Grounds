@@ -70,8 +70,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Procedural")
 	void PlaceActors(TSubclassOf<AActor> ActorToSpawn, FRandomSpawn RandomSpawn);
 
+	//Spawns different Props in BP
 	UFUNCTION(BlueprintCallable, Category = "Procedural")
-	void Test(FRandomSpawn RandomSettings);
+	void PlaceAIGuards(TSubclassOf<APawn> ActorToSpawn, FRandomSpawn RandomSpawn);
 
 	//check if Random Procedural location is available
 	bool CanSpawnAtLocation(FVector Location_, float Radius_);
@@ -80,7 +81,7 @@ public:
 	bool FindEmptyLocation(FVector& OUTTestLocation_, float Radius_);
 
 	//Place Spawned actor 
-	void PlaceActor(TSubclassOf<AActor> ActorToSpawn_, FSpawnTransform SpawnTransform_);
+	AActor* PlaceActor(TSubclassOf<AActor> ActorToSpawn_, FSpawnTransform SpawnTransform_);
 
 	static FVector RandomPositionInTile();
 
@@ -97,4 +98,8 @@ private:
 	AActor* NavMesh;
 
 	TArray<FSpawnTransform> SetRandomSpawnTransform(FRandomSpawn RandomSpawn);
+
+	/*template<class T>
+	void PlaceActors(TSubclassOf<AActor> ActorToSpawn, FRandomSpawn RandomSpawn);*/
+
 };

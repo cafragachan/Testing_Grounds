@@ -80,14 +80,23 @@ void ATile::PlaceActors(TSubclassOf<AActor> ActorToSpawn, FRandomSpawn RandomSpa
 
 	for(auto& SpawnTransform : SpawnTransforms)
 	{
-			PlaceActor(ActorToSpawn, SpawnTransform);
+		PlaceActor(ActorToSpawn, SpawnTransform);
 	}
 }
 
-void ATile::Test(FRandomSpawn RandomSettings)
-{
-}
 
+void ATile::PlaceAIGuards(TSubclassOf<APawn> GuardToSpawn, FRandomSpawn RandomSpawn)
+{
+	TArray<FSpawnTransform> SpawnTransforms = SetRandomSpawnTransform(RandomSpawn);
+
+	for (auto& SpawnTransform : SpawnTransforms)
+	{
+		auto Guard = Cast<APawn>(PlaceActor(GuardToSpawn, SpawnTransform));
+
+		if (!Guard) continue;
+		Guard->SpawnDefaultController();
+	}
+}
 
 bool ATile::CanSpawnAtLocation(FVector Location_, float Radius)
 {
@@ -126,7 +135,7 @@ bool ATile::FindEmptyLocation(FVector& OUTTestLocation_, float Radius_)
 	return  false;
 }
 
-void ATile::PlaceActor(TSubclassOf<AActor> ActorToSpawn_, FSpawnTransform SpawnTransform)
+AActor* ATile::PlaceActor(TSubclassOf<AActor> ActorToSpawn_, FSpawnTransform SpawnTransform)
 {
 	auto SpawnedActor = GetWorld()->SpawnActor<AActor>(ActorToSpawn_);
 
@@ -136,7 +145,11 @@ void ATile::PlaceActor(TSubclassOf<AActor> ActorToSpawn_, FSpawnTransform SpawnT
 		SpawnedActor->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
 		SpawnedActor->SetActorRelativeRotation(FRotator(0, SpawnTransform.Rotation, 0));
 		SpawnedActor->SetActorRelativeScale3D(FVector(SpawnTransform.Scale));
+
+		return SpawnedActor;
 	}
+
+	return nullptr;
 }
 
 
