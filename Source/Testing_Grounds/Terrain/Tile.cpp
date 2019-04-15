@@ -49,7 +49,7 @@ void ATile::SetPool(UActorPool* NavPool_)
 		UE_LOG(LogTemp, Warning, TEXT("[%s] : no Pool"), *GetName());
 		return;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("[%s] : NavMesh %s"), *GetName(), *NavMesh->GetName());
+
 
 	NavMesh->SetActorLocation(GetActorLocation() + FVector(2000, 0 , 0));
 	GetWorld()->GetNavigationSystem()->Build();
