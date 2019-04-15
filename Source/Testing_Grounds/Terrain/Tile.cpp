@@ -76,26 +76,14 @@ TArray<FSpawnTransform> ATile::SetRandomSpawnTransform(FRandomSpawn RandomSpawn)
 
 void ATile::PlaceActors(TSubclassOf<AActor> ActorToSpawn, FRandomSpawn RandomSpawn)
 {
-	TArray<FSpawnTransform> SpawnTransforms = SetRandomSpawnTransform(RandomSpawn);
-
-	for(auto& SpawnTransform : SpawnTransforms)
-	{
-		PlaceActor(ActorToSpawn, SpawnTransform);
-	}
+	RandomPlaceActors(ActorToSpawn, RandomSpawn);
 }
 
 
 void ATile::PlaceAIGuards(TSubclassOf<APawn> GuardToSpawn, FRandomSpawn RandomSpawn)
 {
-	TArray<FSpawnTransform> SpawnTransforms = SetRandomSpawnTransform(RandomSpawn);
+	RandomPlaceActors(GuardToSpawn, RandomSpawn);
 
-	for (auto& SpawnTransform : SpawnTransforms)
-	{
-		auto Guard = Cast<APawn>(PlaceActor(GuardToSpawn, SpawnTransform));
-
-		if (!Guard) continue;
-		Guard->SpawnDefaultController();
-	}
 }
 
 bool ATile::CanSpawnAtLocation(FVector Location_, float Radius)
@@ -135,7 +123,7 @@ bool ATile::FindEmptyLocation(FVector& OUTTestLocation_, float Radius_)
 	return  false;
 }
 
-AActor* ATile::PlaceActor(TSubclassOf<AActor> ActorToSpawn_, FSpawnTransform SpawnTransform)
+void ATile::PlaceActor(TSubclassOf<AActor> ActorToSpawn_, FSpawnTransform SpawnTransform)
 {
 	auto SpawnedActor = GetWorld()->SpawnActor<AActor>(ActorToSpawn_);
 
@@ -145,11 +133,22 @@ AActor* ATile::PlaceActor(TSubclassOf<AActor> ActorToSpawn_, FSpawnTransform Spa
 		SpawnedActor->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
 		SpawnedActor->SetActorRelativeRotation(FRotator(0, SpawnTransform.Rotation, 0));
 		SpawnedActor->SetActorRelativeScale3D(FVector(SpawnTransform.Scale));
-
-		return SpawnedActor;
 	}
+}
 
-	return nullptr;
+void ATile::PlaceActor(TSubclassOf<APawn> GuardToSpawn_, FSpawnTransform SpawnTransform)
+{
+	auto SpawnedActor = GetWorld()->SpawnActor<APawn>(GuardToSpawn_);
+
+	if (ensure(SpawnedActor))
+	{
+		SpawnedActor->SetActorRelativeLocation(SpawnTransform.Location);
+		SpawnedActor->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+		SpawnedActor->SetActorRelativeRotation(FRotator(0, SpawnTransform.Rotation, 0));
+		SpawnedActor->SetActorRelativeScale3D(FVector(SpawnTransform.Scale));
+
+		SpawnedActor->SpawnDefaultController();
+	}
 }
 
 

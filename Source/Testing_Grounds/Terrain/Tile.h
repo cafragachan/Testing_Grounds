@@ -74,23 +74,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Procedural")
 	void PlaceAIGuards(TSubclassOf<APawn> ActorToSpawn, FRandomSpawn RandomSpawn);
 
-	//check if Random Procedural location is available
-	bool CanSpawnAtLocation(FVector Location_, float Radius_);
-
-	//Evaluate Empty Location
-	bool FindEmptyLocation(FVector& OUTTestLocation_, float Radius_);
-
-	//Place Spawned actor 
-	AActor* PlaceActor(TSubclassOf<AActor> ActorToSpawn_, FSpawnTransform SpawnTransform_);
-
-	static FVector RandomPositionInTile();
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Setup")
 	class UActorPool* NavPool;
 
-
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void SetPool(UActorPool* NavPool_);
+
+	static FVector RandomPositionInTile();
 
 
 private:
@@ -99,7 +89,31 @@ private:
 
 	TArray<FSpawnTransform> SetRandomSpawnTransform(FRandomSpawn RandomSpawn);
 
-	/*template<class T>
-	void PlaceActors(TSubclassOf<AActor> ActorToSpawn, FRandomSpawn RandomSpawn);*/
+	template<class T>
+	void RandomPlaceActors(TSubclassOf<T> ActorToSpawn, FRandomSpawn RandomSpawn);
+
+	//Place Spawned actor 
+	void PlaceActor(TSubclassOf<AActor> ActorToSpawn_, FSpawnTransform SpawnTransform_);
+
+	//Place Spawned Pawn
+	void PlaceActor(TSubclassOf<APawn> ActorToSpawn_, FSpawnTransform SpawnTransform_);
+
+	//check if Random Procedural location is available
+	bool CanSpawnAtLocation(FVector Location_, float Radius_);
+
+	//Evaluate Empty Location
+	bool FindEmptyLocation(FVector& OUTTestLocation_, float Radius_);
+
 
 };
+
+template<class T>
+inline void ATile::RandomPlaceActors(TSubclassOf<T> ActorToSpawn, FRandomSpawn RandomSpawn)
+{
+	TArray<FSpawnTransform> SpawnTransforms = SetRandomSpawnTransform(RandomSpawn);
+
+	for (auto& SpawnTransform : SpawnTransforms)
+	{
+		PlaceActor(ActorToSpawn, SpawnTransform);
+	}
+}
