@@ -6,6 +6,46 @@
 #include "GameFramework/Actor.h"
 #include "Tile.generated.h"
 
+/**
+ * Spawn Elements in defines location, rotation, scale
+ */
+USTRUCT()
+struct FSpawnTransform
+{
+	GENERATED_USTRUCT_BODY()
+
+	FVector Location;
+	float Rotation;
+	float Scale;
+};
+
+/**
+ * Generates Random settings for spawning actors in scene
+ */
+USTRUCT(BlueprintType)
+struct FRandomSpawn
+{
+	GENERATED_USTRUCT_BODY()
+
+
+	UPROPERTY(BlueprintReadWrite)
+	int MinNumber = 1;
+
+	UPROPERTY(BlueprintReadWrite)
+	int MaxNumber = 1;
+
+	UPROPERTY(BlueprintReadWrite)
+	float Radius = 250;
+
+	UPROPERTY(BlueprintReadWrite)
+	float MinScale = 1;
+
+	UPROPERTY(BlueprintReadWrite)
+	float MaxScale = 1;
+};
+
+
+
 UCLASS()
 class TESTING_GROUNDS_API ATile : public AActor
 {
@@ -28,7 +68,10 @@ public:
 
 	//Spawns different Props in BP
 	UFUNCTION(BlueprintCallable, Category = "Procedural")
-	void PlaceActors(TSubclassOf<AActor> ActorToSpawn, int MinNumber = 1, int MaxNumber = 1, float Radius_ = 250, float MinScale = 1, float MaxScale = 1);
+	void PlaceActors(TSubclassOf<AActor> ActorToSpawn, FRandomSpawn RandomSpawn);
+
+	UFUNCTION(BlueprintCallable, Category = "Procedural")
+	void Test(FRandomSpawn RandomSettings);
 
 	//check if Random Procedural location is available
 	bool CanSpawnAtLocation(FVector Location_, float Radius_);
@@ -37,7 +80,7 @@ public:
 	bool FindEmptyLocation(FVector& OUTTestLocation_, float Radius_);
 
 	//Place Spawned actor 
-	void PlaceActor(TSubclassOf<AActor> ActorToSpawn_, FVector Location_, float Rotation_, float Scale_);
+	void PlaceActor(TSubclassOf<AActor> ActorToSpawn_, FSpawnTransform SpawnTransform_);
 
 	static FVector RandomPositionInTile();
 
@@ -53,4 +96,5 @@ private:
 
 	AActor* NavMesh;
 
+	TArray<FSpawnTransform> SetRandomSpawnTransform(FRandomSpawn RandomSpawn);
 };
